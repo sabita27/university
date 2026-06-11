@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('item_suppliers', function (Blueprint $table) {
+            $table->string('password')->nullable()->after('phone');
+            $table->rememberToken()->after('password');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('item_suppliers', function (Blueprint $table) {
+            $table->dropColumn(['password', 'remember_token']);
+        });
+    }
+};
