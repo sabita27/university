@@ -85,31 +85,42 @@
                                             <form action="{{ route('supplier.product.category.store') }}" method="POST">
                                                 @csrf
 
-                                                <div class="mb-3">
-                                                    <label class="form-label">Category Title <span class="text-danger">*</span></label>
-                                                    <input type="text" name="title" class="form-control @error('title') is-invalid @enderror"
-                                                           value="{{ old('title') }}" placeholder="e.g. Chemistry Lab Equipment">
-                                                    @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label class="form-label">Description</label>
-                                                    <textarea name="description" class="form-control @error('description') is-invalid @enderror"
-                                                              rows="4" placeholder="Optional description...">{{ old('description') }}</textarea>
-                                                    @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                                </div>
-
                                                 <div class="mb-4">
-                                                    <label class="form-label">Status <span class="text-danger">*</span></label>
-                                                    <select name="status" class="form-select @error('status') is-invalid @enderror">
-                                                        <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
-                                                        <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
-                                                    </select>
-                                                    @error('status')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                                    <label class="form-label" style="font-size: 15px; margin-bottom: 15px; display: block; border-bottom: 1px solid #eee; padding-bottom: 10px;">Select Categories</label>
+                                                    
+                                                    <div class="row">
+                                                        @forelse($allCategories as $category)
+                                                        <div class="col-md-6 mb-3">
+                                                            <div class="form-check custom-checkbox">
+                                                                <input class="form-check-input" type="checkbox" name="categories[]" value="{{ $category->id }}" id="cat_{{ $category->id }}"
+                                                                    {{ is_array($selectedCategories) && in_array($category->id, $selectedCategories) ? 'checked' : '' }} style="width: 18px; height: 18px; cursor: pointer;">
+                                                                <label class="form-check-label" for="cat_{{ $category->id }}" style="margin-left: 8px; cursor: pointer; font-size: 14px; padding-top: 2px;">
+                                                                    {{ $category->title }}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        @empty
+                                                        <div class="col-12 text-muted">No categories available. Please contact admin.</div>
+                                                        @endforelse
+                                                    </div>
                                                 </div>
 
-                                                <div class="d-flex gap-3">
-                                                    <button type="submit" class="btn-sp-save"><i class="fas fa-save me-1"></i> Save Category</button>
+                                                <div class="mb-4 mt-4">
+                                                    <label class="form-label" style="font-size: 15px; margin-bottom: 15px; display: block; border-bottom: 1px solid #eee; padding-bottom: 10px;">Or Add New Category</label>
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3">
+                                                            <label class="form-label">Category Title</label>
+                                                            <input type="text" class="form-control" name="new_category_title" placeholder="Enter new category name...">
+                                                        </div>
+                                                        <div class="col-md-12 mb-3">
+                                                            <label class="form-label">Description</label>
+                                                            <textarea class="form-control" name="new_category_description" rows="3" placeholder="Enter category description..."></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex gap-3 mt-4 pt-3" style="border-top: 1px solid #eee;">
+                                                    <button type="submit" class="btn-sp-save"><i class="fas fa-save me-1"></i> Update Categories</button>
                                                     <a href="{{ route('supplier.product.category.index') }}" class="btn-sp-cancel">Cancel</a>
                                                 </div>
                                             </form>

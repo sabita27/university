@@ -42,7 +42,7 @@ class DashboardController extends Controller
         // Items this supplier can supply
         $myItems = Item::whereIn('category_id', $categories)
             ->where('status', 1)
-            ->with('category')
+            ->with(['category', 'stocks'])
             ->orderBy('name', 'asc')
             ->get();
         

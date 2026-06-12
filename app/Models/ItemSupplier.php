@@ -12,7 +12,7 @@ class ItemSupplier extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'title', 'email', 'phone', 'address', 'contact_person', 'designation', 'contact_person_email', 'contact_person_phone', 'description', 'status', 'categories', 'password',
+        'title', 'email', 'phone', 'address', 'contact_person', 'designation', 'contact_person_email', 'contact_person_phone', 'description', 'status', 'categories', 'items', 'password',
     ];
 
     /**
@@ -26,6 +26,7 @@ class ItemSupplier extends Authenticatable
 
     protected $casts = [
         'categories' => 'array',
+        'items' => 'array',
     ];
 
     public function stocks()

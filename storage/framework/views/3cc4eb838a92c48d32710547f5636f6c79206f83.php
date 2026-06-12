@@ -85,73 +85,43 @@
                                             <form action="<?php echo e(route('supplier.product.category.store')); ?>" method="POST">
                                                 <?php echo csrf_field(); ?>
 
-                                                <div class="mb-3">
-                                                    <label class="form-label">Category Title <span class="text-danger">*</span></label>
-                                                    <input type="text" name="title" class="form-control <?php $__errorArgs = ['title'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"
-                                                           value="<?php echo e(old('title')); ?>" placeholder="e.g. Chemistry Lab Equipment">
-                                                    <?php $__errorArgs = ['title'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?><div class="invalid-feedback"><?php echo e($message); ?></div><?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label class="form-label">Description</label>
-                                                    <textarea name="description" class="form-control <?php $__errorArgs = ['description'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"
-                                                              rows="4" placeholder="Optional description..."><?php echo e(old('description')); ?></textarea>
-                                                    <?php $__errorArgs = ['description'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?><div class="invalid-feedback"><?php echo e($message); ?></div><?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                </div>
-
                                                 <div class="mb-4">
-                                                    <label class="form-label">Status <span class="text-danger">*</span></label>
-                                                    <select name="status" class="form-select <?php $__errorArgs = ['status'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>">
-                                                        <option value="1" <?php echo e(old('status') == '1' ? 'selected' : ''); ?>>Active</option>
-                                                        <option value="0" <?php echo e(old('status') == '0' ? 'selected' : ''); ?>>Inactive</option>
-                                                    </select>
-                                                    <?php $__errorArgs = ['status'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?><div class="invalid-feedback"><?php echo e($message); ?></div><?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                                                    <label class="form-label" style="font-size: 15px; margin-bottom: 15px; display: block; border-bottom: 1px solid #eee; padding-bottom: 10px;">Select Categories</label>
+                                                    
+                                                    <div class="row">
+                                                        <?php $__empty_1 = true; $__currentLoopData = $allCategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                                        <div class="col-md-6 mb-3">
+                                                            <div class="form-check custom-checkbox">
+                                                                <input class="form-check-input" type="checkbox" name="categories[]" value="<?php echo e($category->id); ?>" id="cat_<?php echo e($category->id); ?>"
+                                                                    <?php echo e(is_array($selectedCategories) && in_array($category->id, $selectedCategories) ? 'checked' : ''); ?> style="width: 18px; height: 18px; cursor: pointer;">
+                                                                <label class="form-check-label" for="cat_<?php echo e($category->id); ?>" style="margin-left: 8px; cursor: pointer; font-size: 14px; padding-top: 2px;">
+                                                                    <?php echo e($category->title); ?>
+
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                                        <div class="col-12 text-muted">No categories available. Please contact admin.</div>
+                                                        <?php endif; ?>
+                                                    </div>
                                                 </div>
 
-                                                <div class="d-flex gap-3">
-                                                    <button type="submit" class="btn-sp-save"><i class="fas fa-save me-1"></i> Save Category</button>
+                                                <div class="mb-4 mt-4">
+                                                    <label class="form-label" style="font-size: 15px; margin-bottom: 15px; display: block; border-bottom: 1px solid #eee; padding-bottom: 10px;">Or Add New Category</label>
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3">
+                                                            <label class="form-label">Category Title</label>
+                                                            <input type="text" class="form-control" name="new_category_title" placeholder="Enter new category name...">
+                                                        </div>
+                                                        <div class="col-md-12 mb-3">
+                                                            <label class="form-label">Description</label>
+                                                            <textarea class="form-control" name="new_category_description" rows="3" placeholder="Enter category description..."></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex gap-3 mt-4 pt-3" style="border-top: 1px solid #eee;">
+                                                    <button type="submit" class="btn-sp-save"><i class="fas fa-save me-1"></i> Update Categories</button>
                                                     <a href="<?php echo e(route('supplier.product.category.index')); ?>" class="btn-sp-cancel">Cancel</a>
                                                 </div>
                                             </form>

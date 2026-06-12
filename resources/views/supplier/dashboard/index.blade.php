@@ -391,7 +391,7 @@
                                                         <th>#</th>
                                                         <th>Item Name</th>
                                                         <th>Category</th>
-                                                        <th>Unit</th>
+                                                        <th>Items</th>
                                                         <th>Serial Number</th>
                                                         <th>Status</th>
                                                     </tr>
@@ -402,7 +402,7 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td><strong>{{ $item->name }}</strong></td>
                                                         <td>{{ $item->category->title ?? '-' }}</td>
-                                                        <td>{{ $item->unit ?? '-' }}</td>
+                                                        <td><span class="badge bg-primary" style="font-size: 11px; padding: 4px 10px;">{{ $item->stocks->sum('quantity') }}</span></td>
                                                         <td>{{ $item->serial_number ?? '-' }}</td>
                                                         <td>
                                                             @if($item->status == 1)

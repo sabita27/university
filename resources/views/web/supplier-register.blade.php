@@ -252,11 +252,7 @@
                                                 </div>
                                                 <div class="dropdown-divider-line"></div>
                                                 <div class="dropdown-options">
-                                                    <label class="dropdown-option">
-                                                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
-                                                        <span>Select all</span>
-                                                    </label>
-                                                    <div class="dropdown-divider-line"></div>
+
                                                     @foreach($categories as $category)
                                                     <label class="dropdown-option category-option">
                                                         <input type="checkbox" name="categories[]" value="{{ $category->id }}" onchange="updateDropdownLabel()">
@@ -316,17 +312,6 @@
         });
     }
 
-    function toggleSelectAll() {
-        var selectAll = document.getElementById('selectAll').checked;
-        var checkboxes = document.querySelectorAll('.category-option input[type="checkbox"]');
-        checkboxes.forEach(function(cb) {
-            if (cb.closest('.category-option').style.display !== 'none') {
-                cb.checked = selectAll;
-            }
-        });
-        updateDropdownLabel();
-    }
-
     function updateDropdownLabel() {
         var checked = document.querySelectorAll('.category-option input[type="checkbox"]:checked');
         var label = document.getElementById('dropdownLabel');
@@ -341,11 +326,6 @@
             label.textContent = names.join(', ');
             label.style.color = '#333';
         }
-
-        // Update select-all checkbox state
-        var allCheckboxes = document.querySelectorAll('.category-option input[type="checkbox"]');
-        var allChecked = allCheckboxes.length > 0 && checked.length === allCheckboxes.length;
-        document.getElementById('selectAll').checked = allChecked;
     }
 </script>
 @endsection

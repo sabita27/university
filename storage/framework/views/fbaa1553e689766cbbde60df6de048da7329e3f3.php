@@ -68,66 +68,7 @@
     <!-- [ Pre-loader ] End -->
 
     <!-- [ navigation menu ] start -->
-    <nav class="pcoded-navbar active-lightblue title-lightblue navbar-lightblue brand-lightblue navbar-image-4 menu-item-icon-style2 <?php echo e(\Cookie::get('sidebar')); ?>">
-        <div class="navbar-wrapper">
-            <div class="navbar-brand header-logo">
-                <?php if(isset($setting) && !empty($setting->logo_path) && file_exists(public_path('uploads/setting/'.$setting->logo_path))): ?>
-                <a href="<?php echo e(route('supplier.dashboard.index')); ?>" class="b-brand">
-                    <img src="<?php echo e(asset('uploads/setting/'.$setting->logo_path)); ?>" alt="logo">
-                </a>
-                <?php endif; ?>
-                <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
-            </div>
-
-            <!-- Supplier Sidebar Menu content -->
-            <div class="navbar-content scroll-div">
-                <ul class="nav pcoded-inner-navbar">
-                    <li class="nav-item pcoded-menu-caption">
-                        <label>Navigation</label>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<?php echo e(route('supplier.dashboard.index')); ?>" class="nav-link">
-                            <span class="pcoded-micon"><i class="fas fa-th-large"></i></span>
-                            <span class="pcoded-mtext">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<?php echo e(route('supplier.order.index')); ?>" class="nav-link">
-                            <span class="pcoded-micon"><i class="fas fa-file-invoice"></i></span>
-                            <span class="pcoded-mtext">Orders</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<?php echo e(route('supplier.stock.index')); ?>" class="nav-link">
-                            <span class="pcoded-micon"><i class="fas fa-boxes"></i></span>
-                            <span class="pcoded-mtext">My Stocks</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<?php echo e(route('supplier.product.category.index')); ?>" class="nav-link">
-                            <span class="pcoded-micon"><i class="fas fa-tags"></i></span>
-                            <span class="pcoded-mtext">Products</span>
-                        </a>
-                    </li>
-                    <li class="nav-item pcoded-menu-caption">
-                        <label>Account Pages</label>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<?php echo e(route('supplier.profile.index')); ?>" class="nav-link">
-                            <span class="pcoded-micon"><i class="fas fa-user"></i></span>
-                            <span class="pcoded-mtext">Profile</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <span class="pcoded-micon"><i class="fas fa-sign-out-alt"></i></span>
-                            <span class="pcoded-mtext">Log out</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php echo $__env->make('supplier.layouts.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <!-- [ navigation menu ] end -->
 
     <!-- [ Header ] start -->
@@ -280,8 +221,11 @@
                             <div class="row">
                                 <div class="col-sm-12 mb-4">
                                     <div class="card" style="border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: none;">
-                                        <div class="card-header text-white" style="background-color: #0d6efd; border-radius: 10px 10px 0 0; padding: 20px;">
+                                        <div class="card-header text-white" style="background-color: #0d6efd; border-radius: 10px 10px 0 0; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
                                             <h5 class="text-white m-0" style="font-weight: 600;">Stocks Supplied</h5>
+                                            <a href="<?php echo e(route('supplier.stock.create')); ?>" class="btn btn-light btn-sm text-primary" style="font-weight: 600; border-radius: 6px;">
+                                                <i class="fas fa-plus"></i> Add Stock
+                                            </a>
                                         </div>
                                         <div class="card-body" style="padding: 0;">
                                             <div class="table-responsive">
@@ -294,6 +238,7 @@
                                                             <th style="color: #888; font-weight: 600; border-top: none; padding: 15px 20px;">QUANTITY</th>
                                                             <th style="color: #888; font-weight: 600; border-top: none; padding: 15px 20px;">PRICE</th>
                                                             <th style="color: #888; font-weight: 600; border-top: none; padding: 15px 20px;">DATE</th>
+                                                            <th style="color: #888; font-weight: 600; border-top: none; padding: 15px 20px;">ACTION</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -305,10 +250,18 @@
                                                             <td style="padding: 15px 20px; vertical-align: middle; color: #555;"><?php echo e($stock->quantity ?? '-'); ?></td>
                                                             <td style="padding: 15px 20px; vertical-align: middle; color: #555;"><?php echo e($stock->price ?? '-'); ?></td>
                                                             <td style="padding: 15px 20px; vertical-align: middle; color: #555;"><?php echo e($stock->date ?? '-'); ?></td>
+                                                            <td style="padding: 15px 20px; vertical-align: middle;">
+                                                                <a href="<?php echo e(route('supplier.stock.edit', $stock->id)); ?>" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                                <form action="<?php echo e(route('supplier.stock.destroy', $stock->id)); ?>" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this stock?');">
+                                                                    <?php echo csrf_field(); ?>
+                                                                    <?php echo method_field('DELETE'); ?>
+                                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
+                                                                </form>
+                                                            </td>
                                                         </tr>
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                                         <tr>
-                                                            <td colspan="6" class="text-center text-muted" style="padding: 30px;">No stocks found</td>
+                                                            <td colspan="7" class="text-center text-muted" style="padding: 30px;">No stocks found</td>
                                                         </tr>
                                                         <?php endif; ?>
                                                     </tbody>

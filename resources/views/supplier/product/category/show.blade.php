@@ -145,7 +145,7 @@
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Item Name</th>
-                                                        <th>Unit</th>
+                                                        <th>Items</th>
                                                         <th>Serial No.</th>
                                                         <th>Status</th>
                                                     </tr>

@@ -220,8 +220,11 @@
                             <div class="row">
                                 <div class="col-sm-12 mb-4">
                                     <div class="card" style="border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: none;">
-                                        <div class="card-header text-white" style="background-color: #0d6efd; border-radius: 10px 10px 0 0; padding: 20px;">
+                                        <div class="card-header text-white" style="background-color: #0d6efd; border-radius: 10px 10px 0 0; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
                                             <h5 class="text-white m-0" style="font-weight: 600;">Stocks Supplied</h5>
+                                            <a href="{{ route('supplier.stock.create') }}" class="btn btn-light btn-sm text-primary" style="font-weight: 600; border-radius: 6px;">
+                                                <i class="fas fa-plus"></i> Add Stock
+                                            </a>
                                         </div>
                                         <div class="card-body" style="padding: 0;">
                                             <div class="table-responsive">
@@ -234,6 +237,7 @@
                                                             <th style="color: #888; font-weight: 600; border-top: none; padding: 15px 20px;">QUANTITY</th>
                                                             <th style="color: #888; font-weight: 600; border-top: none; padding: 15px 20px;">PRICE</th>
                                                             <th style="color: #888; font-weight: 600; border-top: none; padding: 15px 20px;">DATE</th>
+                                                            <th style="color: #888; font-weight: 600; border-top: none; padding: 15px 20px;">ACTION</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -245,10 +249,18 @@
                                                             <td style="padding: 15px 20px; vertical-align: middle; color: #555;">{{ $stock->quantity ?? '-' }}</td>
                                                             <td style="padding: 15px 20px; vertical-align: middle; color: #555;">{{ $stock->price ?? '-' }}</td>
                                                             <td style="padding: 15px 20px; vertical-align: middle; color: #555;">{{ $stock->date ?? '-' }}</td>
+                                                            <td style="padding: 15px 20px; vertical-align: middle;">
+                                                                <a href="{{ route('supplier.stock.edit', $stock->id) }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                                                <form action="{{ route('supplier.stock.destroy', $stock->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this stock?');">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
+                                                                </form>
+                                                            </td>
                                                         </tr>
                                                         @empty
                                                         <tr>
-                                                            <td colspan="6" class="text-center text-muted" style="padding: 30px;">No stocks found</td>
+                                                            <td colspan="7" class="text-center text-muted" style="padding: 30px;">No stocks found</td>
                                                         </tr>
                                                         @endforelse
                                                     </tbody>

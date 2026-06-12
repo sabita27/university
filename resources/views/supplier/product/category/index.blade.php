@@ -125,7 +125,7 @@
                                 <div class="sp-card-header">
                                     <h5><i class="fas fa-tags me-2"></i> My Categories</h5>
                                     <a href="{{ route('supplier.product.category.create') }}" class="btn-sp-add">
-                                        <i class="fas fa-plus"></i> Add Category
+                                        <i class="fas fa-plus"></i> Add More Category
                                     </a>
                                 </div>
                                 <div class="table-responsive">
@@ -141,12 +141,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $supplierItemIds = is_array(Auth::guard('supplier')->user()->items) ? Auth::guard('supplier')->user()->items : [];
+                                            @endphp
                                             @forelse($categories as $key => $cat)
                                             <tr>
                                                 <td>{{ $categories->firstItem() + $key }}</td>
                                                 <td><strong>{{ $cat->title }}</strong></td>
                                                 <td>{{ $cat->description ? \Str::limit($cat->description, 60) : '-' }}</td>
-                                                <td><span class="badge bg-primary">{{ $cat->items->count() }}</span></td>
+                                                <td><span class="badge bg-primary">{{ collect($supplierItemIds)->intersect($cat->items->pluck('id'))->count() }}</span></td>
                                                 <td>
                                                     @if($cat->status == 1)
                                                         <span class="badge-active">Active</span>
@@ -155,11 +158,10 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('supplier.product.category.show', $cat->id) }}" class="btn-action btn-view"><i class="fas fa-eye"></i> View</a>
-                                                    <a href="{{ route('supplier.product.category.edit', $cat->id) }}" class="btn-action btn-edit"><i class="fas fa-edit"></i> Edit</a>
-                                                    <form action="{{ route('supplier.product.category.destroy', $cat->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Delete this category?')">
+
+                                                    <form action="{{ route('supplier.product.category.destroy', $cat->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Remove this category from your list?')">
                                                         @csrf @method('DELETE')
-                                                        <button type="submit" class="btn-action btn-delete"><i class="fas fa-trash"></i> Delete</button>
+                                                        <button type="submit" class="btn-action btn-delete"><i class="fas fa-trash"></i> Remove</button>
                                                     </form>
                                                 </td>
                                             </tr>

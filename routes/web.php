@@ -617,7 +617,7 @@ Route::middleware(['auth:supplier', 'XSS'])->prefix('supplier')->name('supplier.
     Route::get('order', 'OrderController@index')->name('order.index');
     
     // My Stocks Route
-    Route::get('stock', 'StockController@index')->name('stock.index');
+    Route::resource('stock', 'StockController');
 
     // Products – Category CRUD
     Route::resource('product/category', 'ProductCategoryController')->names([
@@ -628,6 +628,17 @@ Route::middleware(['auth:supplier', 'XSS'])->prefix('supplier')->name('supplier.
         'edit'    => 'product.category.edit',
         'update'  => 'product.category.update',
         'destroy' => 'product.category.destroy',
+    ]);
+    
+    // Products – Product CRUD
+    Route::resource('product', 'ProductController')->names([
+        'index'   => 'product.index',
+        'create'  => 'product.create',
+        'store'   => 'product.store',
+        'show'    => 'product.show',
+        'edit'    => 'product.edit',
+        'update'  => 'product.update',
+        'destroy' => 'product.destroy',
     ]);
     
     // Profile Route

@@ -126,7 +126,7 @@
                                 <div class="sp-card-header">
                                     <h5><i class="fas fa-tags me-2"></i> My Categories</h5>
                                     <a href="<?php echo e(route('supplier.product.category.create')); ?>" class="btn-sp-add">
-                                        <i class="fas fa-plus"></i> Add Category
+                                        <i class="fas fa-plus"></i> Add More Category
                                     </a>
                                 </div>
                                 <div class="table-responsive">
@@ -142,12 +142,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php
+                                                $supplierItemIds = is_array(Auth::guard('supplier')->user()->items) ? Auth::guard('supplier')->user()->items : [];
+                                            ?>
                                             <?php $__empty_1 = true; $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                             <tr>
                                                 <td><?php echo e($categories->firstItem() + $key); ?></td>
                                                 <td><strong><?php echo e($cat->title); ?></strong></td>
                                                 <td><?php echo e($cat->description ? \Str::limit($cat->description, 60) : '-'); ?></td>
-                                                <td><span class="badge bg-primary"><?php echo e($cat->items->count()); ?></span></td>
+                                                <td><span class="badge bg-primary"><?php echo e(collect($supplierItemIds)->intersect($cat->items->pluck('id'))->count()); ?></span></td>
                                                 <td>
                                                     <?php if($cat->status == 1): ?>
                                                         <span class="badge-active">Active</span>
@@ -156,11 +159,10 @@
                                                     <?php endif; ?>
                                                 </td>
                                                 <td>
-                                                    <a href="<?php echo e(route('supplier.product.category.show', $cat->id)); ?>" class="btn-action btn-view"><i class="fas fa-eye"></i> View</a>
-                                                    <a href="<?php echo e(route('supplier.product.category.edit', $cat->id)); ?>" class="btn-action btn-edit"><i class="fas fa-edit"></i> Edit</a>
-                                                    <form action="<?php echo e(route('supplier.product.category.destroy', $cat->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Delete this category?')">
+
+                                                    <form action="<?php echo e(route('supplier.product.category.destroy', $cat->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Remove this category from your list?')">
                                                         <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
-                                                        <button type="submit" class="btn-action btn-delete"><i class="fas fa-trash"></i> Delete</button>
+                                                        <button type="submit" class="btn-action btn-delete"><i class="fas fa-trash"></i> Remove</button>
                                                     </form>
                                                 </td>
                                             </tr>

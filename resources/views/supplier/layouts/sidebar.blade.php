@@ -38,8 +38,8 @@
                 <li class="nav-item pcoded-menu-caption">
                     <label>Products</label>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item {{ Request::is('supplier/product') || (Request::is('supplier/product/*') && !Request::is('supplier/product/category*')) ? 'active' : '' }}">
+                    <a href="{{ route('supplier.product.index') }}" class="nav-link">
                         <span class="pcoded-micon"><i class="fas fa-box"></i></span>
                         <span class="pcoded-mtext">Product</span>
                     </a>
